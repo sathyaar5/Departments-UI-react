@@ -1,6 +1,8 @@
 import './App.css';
-import './styles.css'
-import DepartmentList from './Dept'
+import DepartmentList from './Components/DepartmentList'
+import './Components/styles.css'
+
+
 function App() {
   return (
     <div className="App">
