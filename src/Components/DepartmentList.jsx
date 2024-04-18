@@ -82,11 +82,6 @@ const employeesData = [
 //     const { selectedDepartmentIndex } = this.state;
 //     const selectedDepartment = employeesData[selectedDepartmentIndex];
 //     const numberOfEmployees = selectedDepartment ? selectedDepartment.employeeDetails.length : 0;
-//     let departmentManager = null;
-
-//     if (selectedDepartment) {
-//       departmentManager = selectedDepartment.employeeDetails.find(employee => employee.designation === 'Manager');
-//     }
 
 //     return (
 //       <Container>
@@ -97,7 +92,7 @@ const employeesData = [
 //           <Grid item xs={9}>
 //             {selectedDepartment && (
 //               <>
-//                 <Header department={selectedDepartment} numberOfEmployees={numberOfEmployees} departmentManager={departmentManager} />
+//                 <Header department={selectedDepartment} numberOfEmployees={numberOfEmployees} manager={selectedDepartment.manager} />
 //                 <EmployeeDetails employees={selectedDepartment.employeeDetails} />
 //               </>
 //             )}
@@ -117,11 +112,6 @@ const DepartmentList = () => {
 
   const selectedDepartment = employeesData[selectedDepartmentIndex] ;
   const numberOfEmployees = selectedDepartment ? selectedDepartment.employeeDetails.length : 0;
-  let departmentManager = null;
-
-  if(selectedDepartment){
-    departmentManager = selectedDepartment.employeeDetails.find(employee=> employee.designation === 'Manager');
-  }
 
   return (
     <Container>
@@ -132,7 +122,7 @@ const DepartmentList = () => {
         <Grid item xs={9}>
           {selectedDepartment && (
             <>
-            <Header department={selectedDepartment} numberOfEmployees={numberOfEmployees} departmentManager={departmentManager}/>
+            <Header department={selectedDepartment} numberOfEmployees={numberOfEmployees}  manager={selectedDepartment.manager}/>
             <EmployeeDetails employees={selectedDepartment.employeeDetails}/>
             </>
           )}
