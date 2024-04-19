@@ -1,10 +1,10 @@
 // import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import EmployeeDetails from './EmployeeDetails';
 import { Container, Grid } from '@mui/material';
- 
-import { useState } from 'react';
+
 
 
 const employeesData = [
@@ -105,30 +105,45 @@ const employeesData = [
 
 const DepartmentList = () => {
   const [selectedDepartmentIndex, setSelectedDepartmentIndex] = useState(null);
+  const [departments, setDepartments] = useState(employeesData);
 
-  const handleDepartmentClick = (index) =>{
+  const handleDepartmentClick = (index) => {
     setSelectedDepartmentIndex(index);
-  }
+  };  
 
-  const selectedDepartment = employeesData[selectedDepartmentIndex] ;
+  const handleAddEmployee = (departmentIndex, newEmployee) => {
+    setDepartments((prevDepartments) => {
+      const updatedDepartments = [...prevDepartments];
+      const department = updatedDepartments[departmentIndex];
+      const id = department.employeeDetails.length + 1; 
+      newEmployee.id = id;
+      department.employeeDetails.push(newEmployee);
+      return updatedDepartments;
+    });
+  };
+
+
+  const selectedDepartment = departments[selectedDepartmentIndex];
   const numberOfEmployees = selectedDepartment ? selectedDepartment.employeeDetails.length : 0;
 
   return (
     <Container>
       <Grid container spacing={3}>
         <Grid item xs={3}>
-          <Sidebar departments={employeesData} handleDepartmentClick={handleDepartmentClick}></Sidebar>
+          <Sidebar departments={departments} handleDepartmentClick={handleDepartmentClick}></Sidebar>
         </Grid>
         <Grid item xs={9}>
           {selectedDepartment && (
             <>
-            <Header department={selectedDepartment} numberOfEmployees={numberOfEmployees}  manager={selectedDepartment.manager}/>
-            <EmployeeDetails employees={selectedDepartment.employeeDetails}/>
+              <Header department={selectedDepartment} numberOfEmployees={numberOfEmployees} manager={selectedDepartment.manager} onAddEmployee={(newEmployee) => handleAddEmployee(selectedDepartmentIndex, newEmployee)}
+              />
+              <EmployeeDetails employees={selectedDepartment.employeeDetails} />
             </>
           )}
         </Grid>
       </Grid>
     </Container>
-  )
-}
+  );
+};
+
 export default DepartmentList;

@@ -42,8 +42,8 @@ const EmployeeDetails = ({ employees }) => (
       </TableRow>
     </TableHead>
     <TableBody>
-      {employees.map((employee) => (
-        <TableRow key={employee.id}>
+      {employees.map((employee, index) => (
+        <TableRow key={index}>
           <TableCell>{employee.id}</TableCell>
           <TableCell>{employee.name}</TableCell>
           <TableCell>{employee.designation}</TableCell>
