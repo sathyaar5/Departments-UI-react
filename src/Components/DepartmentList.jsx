@@ -5,8 +5,6 @@ import Header from './Header';
 import EmployeeDetails from './EmployeeDetails';
 import { Container, Grid } from '@mui/material';
 
-
-
 const employeesData = [
   {
       deptName: 'Technical Department',
@@ -18,9 +16,11 @@ const employeesData = [
           { id: 4, name: 'Rudresh', designation: 'Software Engineer', branch: 'Bengaluru' },
           { id: 5, name: 'Sathya', designation: 'Software Engineer', branch: 'Bengaluru' },
           { id: 6, name: 'Sai Keerthana', designation: 'Software Engineer', branch: 'Bengaluru' },
-          { id: 7, name: 'Shankar', designation: 'Software Engineer', branch: 'Bengaluru' },
-          { id: 8, name: 'ram', designation: 'Software Engineer', branch: 'Bengaluru' },
-          { id: 9, name: 'Ibrahim', designation: 'Software Engineer', branch: 'Chennai' }       
+          { id: 7, name: 'Ammu', designation: 'Software Engineer', branch: 'Bengaluru' },
+          { id: 8, name: 'Shankar', designation: 'Software Engineer', branch: 'Bengaluru' },
+          { id: 9, name: 'ram', designation: 'Software Engineer', branch: 'Bengaluru' },
+          { id: 10, name: 'Ibrahim', designation: 'Software Engineer', branch: 'Chennai' },       
+          { id: 11, name: 'baba', designation: 'Software Engineer', branch: 'bengaluru' },       
       ]
   },  
 
@@ -49,7 +49,7 @@ const employeesData = [
       manager: 'Srilekha',
       employeeDetails: [ 
           { id: 1, name: 'Srilekha', designation: 'Manager', branch: 'Bengaluru' },
-          { id: 2, name: 'harsha', designation: 'Financial Analyst', branch: 'Bengaluru' }
+          { id: 2, name: 'Harsha', designation: 'Financial Analyst', branch: 'Bengaluru' }
       ]
   },
 
@@ -70,7 +70,8 @@ const employeesData = [
 //   constructor(props) {
 //     super(props);
 //     this.state = {
-//       selectedDepartmentIndex: null
+//       selectedDepartmentIndex: null,
+//       departments: employeesData,
 //     };
 //   }
 
@@ -78,22 +79,54 @@ const employeesData = [
 //     this.setState({ selectedDepartmentIndex: index });
 //   };
 
+//   handleAddEmployee = (departmentIndex, newEmployee) => {
+//     this.setState((prevState) => {
+//       const updatedDepartments = [...prevState.departments];
+//       const department = updatedDepartments[departmentIndex];
+//       const id = department.employeeDetails.length + 1;
+//       newEmployee.id = id;
+//       department.employeeDetails.push(newEmployee);
+//       return { departments: updatedDepartments };
+//     });
+//   };
+
+//   handleDeleteEmployee = (departmentIndex, employeeIndex) => {
+//     this.setState((prevState) => {
+//       const updatedDepartments = [...prevState.departments];
+//       const department = updatedDepartments[departmentIndex];
+//       department.employeeDetails.splice(employeeIndex, 1);
+//       department.employeeDetails.forEach((employee, index) => {
+//         employee.id = index + 1;
+//       });
+//       return { departments: updatedDepartments };
+//     });
+//   };
+
 //   render() {
-//     const { selectedDepartmentIndex } = this.state;
-//     const selectedDepartment = employeesData[selectedDepartmentIndex];
+//     const { selectedDepartmentIndex, departments } = this.state;
+//     const selectedDepartment = departments[selectedDepartmentIndex];
 //     const numberOfEmployees = selectedDepartment ? selectedDepartment.employeeDetails.length : 0;
 
 //     return (
 //       <Container>
 //         <Grid container spacing={3}>
 //           <Grid item xs={3}>
-//             <Sidebar departments={employeesData} handleDepartmentClick={this.handleDepartmentClick} />
+//             <Sidebar departments={departments} handleDepartmentClick={this.handleDepartmentClick} />
 //           </Grid>
 //           <Grid item xs={9}>
 //             {selectedDepartment && (
 //               <>
-//                 <Header department={selectedDepartment} numberOfEmployees={numberOfEmployees} manager={selectedDepartment.manager} />
-//                 <EmployeeDetails employees={selectedDepartment.employeeDetails} />
+//                 <Header
+//                   department={selectedDepartment}
+//                   numberOfEmployees={numberOfEmployees}
+//                   manager={selectedDepartment.manager}
+//                   onAddEmployee={(newEmployee) => this.handleAddEmployee(selectedDepartmentIndex, newEmployee)}
+//                   onDeleteEmployee={(employeeIndex) => this.handleDeleteEmployee(selectedDepartmentIndex, employeeIndex)}
+//                 />
+//                 <EmployeeDetails
+//                   employees={selectedDepartment.employeeDetails}
+//                   onDeleteEmployee={(employeeIndex) => this.handleDeleteEmployee(selectedDepartmentIndex, employeeIndex)}
+//                 />
 //               </>
 //             )}
 //           </Grid>
@@ -103,25 +136,40 @@ const employeesData = [
 //   }
 // }
 
+
 const DepartmentList = () => {
   const [selectedDepartmentIndex, setSelectedDepartmentIndex] = useState(null);
   const [departments, setDepartments] = useState(employeesData);
 
   const handleDepartmentClick = (index) => {
     setSelectedDepartmentIndex(index);
-  };  
+  };
 
   const handleAddEmployee = (departmentIndex, newEmployee) => {
     setDepartments((prevDepartments) => {
       const updatedDepartments = [...prevDepartments];
       const department = updatedDepartments[departmentIndex];
-      const id = department.employeeDetails.length + 1; 
+      const id = department.employeeDetails.length + 1;
       newEmployee.id = id;
       department.employeeDetails.push(newEmployee);
       return updatedDepartments;
     });
   };
 
+  const handleDeleteEmployee = (departmentIndex, employeeIndex) => {
+    setDepartments((prevDepartments) => {
+      const updatedDepartments = [...prevDepartments];
+      const department = updatedDepartments[departmentIndex];
+      
+      department.employeeDetails.splice(employeeIndex, 1);
+      
+      department.employeeDetails.forEach((employee, index) => {
+        employee.id = index + 1; 
+      });
+  
+      return updatedDepartments;
+    });
+  };
 
   const selectedDepartment = departments[selectedDepartmentIndex];
   const numberOfEmployees = selectedDepartment ? selectedDepartment.employeeDetails.length : 0;
@@ -130,14 +178,24 @@ const DepartmentList = () => {
     <Container>
       <Grid container spacing={3}>
         <Grid item xs={3}>
-          <Sidebar departments={departments} handleDepartmentClick={handleDepartmentClick}></Sidebar>
+          <Sidebar departments={departments} handleDepartmentClick={handleDepartmentClick} />
         </Grid>
         <Grid item xs={9}>
           {selectedDepartment && (
             <>
-              <Header department={selectedDepartment} numberOfEmployees={numberOfEmployees} manager={selectedDepartment.manager} onAddEmployee={(newEmployee) => handleAddEmployee(selectedDepartmentIndex, newEmployee)}
+              <Header
+                department={selectedDepartment}
+                numberOfEmployees={numberOfEmployees}
+                manager={selectedDepartment.manager}
+                onAddEmployee={(newEmployee) => handleAddEmployee(selectedDepartmentIndex, newEmployee)}
+                onDeleteEmployee={(employeeIndex) => handleDeleteEmployee(selectedDepartmentIndex, employeeIndex)}
               />
-              <EmployeeDetails employees={selectedDepartment.employeeDetails} />
+              <EmployeeDetails 
+                employees={selectedDepartment.employeeDetails} 
+                onDeleteEmployee={(employeeIndex) => 
+                  handleDeleteEmployee(selectedDepartmentIndex, employeeIndex)
+                }
+              />
             </>
           )}
         </Grid>
