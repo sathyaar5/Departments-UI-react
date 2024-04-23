@@ -156,10 +156,10 @@ const DepartmentList = () => {
     });
   };
 
-  const handleDeleteEmployee = (departmentIndex, employeeIndex) => {
+  const handleDeleteEmployee = (employeeIndex) => {
     setDepartments((prevDepartments) => {
       const updatedDepartments = [...prevDepartments];
-      const department = updatedDepartments[departmentIndex];
+      const department = updatedDepartments[selectedDepartmentIndex];
       
       department.employeeDetails.splice(employeeIndex, 1);
       
@@ -192,9 +192,7 @@ const DepartmentList = () => {
               />
               <EmployeeDetails 
                 employees={selectedDepartment.employeeDetails} 
-                onDeleteEmployee={(employeeIndex) => 
-                  handleDeleteEmployee(selectedDepartmentIndex, employeeIndex)
-                }
+                onDeleteEmployee={handleDeleteEmployee}
               />
             </>
           )}

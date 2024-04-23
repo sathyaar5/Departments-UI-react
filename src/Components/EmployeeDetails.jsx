@@ -50,7 +50,7 @@ const EmployeeDetails = ({ employees, onDeleteEmployee }) => {
 
   return (
     <Table>
-      <TableHead>
+      <TableHead> 
         <TableRow>
           <TableCell>ID</TableCell>
           <TableCell>Name</TableCell>
